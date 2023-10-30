@@ -44,5 +44,18 @@ public ResponseEntity<String> registerUser(@RequestBody User user) {
     // Respond with a success message or the saved user details
     return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
 }
+// ... (previous code remains the same)
 
+@PostMapping("/login")
+public ResponseEntity<String> loginUser(@RequestBody User user) {
+    // Fetch the user details from the database based on the provided email
+    User existingUser = userRepository.findByEmail(user.getEmail());
+
+    // Check if the user exists and if the password matches
+    if (existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
+        return ResponseEntity.status(HttpStatus.OK).body("Login successful");
+    } else {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bad credentials");
+    }
+}
 }
